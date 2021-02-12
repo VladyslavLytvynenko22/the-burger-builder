@@ -7,7 +7,9 @@ import classes from './SideDraw.module.css';
 const slideDrawer = () => {
   return (
     <div className={classes.SlideDraw}>
-      <Logo />
+      <div>
+        <Logo />
+      </div>
       <nav>
         <NavigationItems />
       </nav>
