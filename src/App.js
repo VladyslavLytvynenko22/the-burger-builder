@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import classes from './App.module.css';
-import Layaut from './components/Layaout/Layaout';
+import Layaut from './hoc/Layaout/Layaout';
 import BurgerBuilder from './containers/BurgerBuilder/BurgerBuilder';
 
 class App extends Component {

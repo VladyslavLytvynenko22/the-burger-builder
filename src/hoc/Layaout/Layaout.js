@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 
-import Aux from './../../hoc/Auxiliary';
+import Aux from './../../hoc/Auxiliary/Auxiliary';
 import classes from './Layaout.module.css';
-import Toolbar from './../Navigation/Toolbar/Toolbar';
-import SlideDrawer from './../Navigation/SideDrawer/SideDrawer';
+import Toolbar from './../../components/Navigation/Toolbar/Toolbar';
+import SlideDrawer from './../../components/Navigation/SideDrawer/SideDrawer';
 
 class Layaout extends Component {
   state = {
