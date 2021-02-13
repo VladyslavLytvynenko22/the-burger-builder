@@ -7,17 +7,23 @@ import SlideDrawer from './../Navigation/SideDrawer/SideDrawer';
 
 class Layaout extends Component {
   state = {
-    showSlideDrawer: true,
+    showSlideDrawer: false,
   };
 
   slideDrawerClosedHandler = () => {
     this.setState({ showSlideDrawer: false });
   };
 
+  slideDrawerOpenHandler = () => {
+    this.setState((prevState) => ({
+      showSlideDrawer: !prevState.showSlideDrawer,
+    }));
+  };
+
   render() {
     return (
       <Aux>
-        <Toolbar />
+        <Toolbar drawerToggleClicked={this.slideDrawerOpenHandler} />
         <SlideDrawer
           open={this.state.showSlideDrawer}
           closed={this.slideDrawerClosedHandler}
