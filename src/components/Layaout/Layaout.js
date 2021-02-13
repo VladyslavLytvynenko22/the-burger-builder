@@ -1,16 +1,31 @@
-import React from 'react';
+import React, { Component } from 'react';
 
 import Aux from './../../hoc/Auxiliary';
 import classes from './Layaout.module.css';
 import Toolbar from './../Navigation/Toolbar/Toolbar';
-import SlideDraw from './../Navigation/SideDrawer/SideDrawer';
+import SlideDrawer from './../Navigation/SideDrawer/SideDrawer';
 
-const layaout = (props) => (
-  <Aux>
-    <Toolbar />
-    <SlideDraw />
-    <main className={classes.Content}>{props.children}</main>
-  </Aux>
-);
+class Layaout extends Component {
+  state = {
+    showSlideDrawer: true,
+  };
 
-export default layaout;
+  slideDrawerClosedHandler = () => {
+    this.setState({ showSlideDrawer: false });
+  };
+
+  render() {
+    return (
+      <Aux>
+        <Toolbar />
+        <SlideDrawer
+          open={this.state.showSlideDrawer}
+          closed={this.slideDrawerClosedHandler}
+        />
+        <main className={classes.Content}>{this.props.children}</main>
+      </Aux>
+    );
+  }
+}
+
+export default Layaout;
