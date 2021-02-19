@@ -19,7 +19,7 @@ export default withErrorHandler(
           for (let key in res.data) {
             fetchedOrders.push({ ...res.data[key], id: key });
           }
-          this.setState({ loading: false });
+          this.setState({ orders: fetchedOrders, loading: false });
         })
         .catch((fail) => this.setState({ loading: false }));
     }
@@ -27,8 +27,13 @@ export default withErrorHandler(
     render() {
       return (
         <div>
-          <Order />
-          <Order />
+          {this.state.orders.map((order) => (
+            <Order
+              key={order.key}
+              ingredients={order.ingredients}
+              price={+order.price}
+            />
+          ))}
         </div>
       );
     }
