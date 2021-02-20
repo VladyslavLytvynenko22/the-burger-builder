@@ -26,17 +26,17 @@ export default function input(props) {
       );
       break;
     case 'select':
+      const options = props.elementConfig.options.map((option) => (
+        <option key={option.value} value={option.value}>
+          {option.displayValue}
+        </option>
+      ));
       inputElement = (
         <select
           onChange={() => {}}
           className={classes.InputElement}
-          {...props.elementConfig}
           value={props.value}>
-          {props.elementConfig.options.map((option, id) => (
-            <option key={id} value={option.value}>
-              {option.displayValue}
-            </option>
-          ))}
+          {options}
         </select>
       );
       break;
