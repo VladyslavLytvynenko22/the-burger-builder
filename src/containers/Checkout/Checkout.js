@@ -45,7 +45,7 @@ export default class Checkout extends Component {
           render={() => (
             <ContactData
               ingredients={this.state.ingredients}
-              price={this.state.price}
+              price={+this.state.price}
               {...this.props}
             />
           )}
