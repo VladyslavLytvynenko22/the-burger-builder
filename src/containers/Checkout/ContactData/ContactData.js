@@ -8,14 +8,47 @@ import classes from './ContactData.module.css';
 
 export default class ContactData extends Component {
   state = {
-    name: '',
-    email: '',
-    address: {
-      street: '',
-      postalCode: '',
+    orderForm: {
+      name: this.getInputTypeObject('text', 'Your Name', ''),
+      street: this.getInputTypeObject('text', 'Street', ''),
+      zipCode: this.getInputTypeObject('text', 'ZIP Code', ''),
+      country: this.getInputTypeObject('text', 'Country', ''),
+      email: this.getInputTypeObject('email', 'Your E-Mail', ''),
+      deliveryMethod: this.getSelectTypeOdject(['Fastest', 'Cheapest'], ''),
     },
     loading: false,
   };
+
+  getInputTypeObject(type, placeholder, value) {
+    return {
+      elementType: 'input',
+      elementConfig: {
+        type: type,
+        placeholder: placeholder,
+      },
+      value: value,
+    };
+  }
+
+  getSelectTypeOdject(optionValues, value) {
+    let options = [];
+    if (optionValues && optionValues.length > 0) {
+      for (const option in optionValues) {
+        options.push({
+          calue: option.toLowerCase(),
+          displayValue: option,
+        });
+      }
+    }
+
+    return {
+      elementType: 'select',
+      elementConfig: {
+        options: options,
+      },
+      value: value,
+    };
+  }
 
   orderHandler = (event) => {
     event.preventDefault();
@@ -26,15 +59,7 @@ export default class ContactData extends Component {
     const order = {
       ingredients: this.props.ingredients,
       price: this.props.price,
-      customer: {
-        name: 'vlad',
-        address: {
-          street: 'test street',
-          zipCode: '412323',
-          country: 'Ukraine',
-        },
-        email: 'test@test.com',
-      },
+      customer: {},
       deliveryMethod: 'fastest',
     };
     axios.post('/orders.json', order).finally(() => {
@@ -48,12 +73,7 @@ export default class ContactData extends Component {
   render() {
     let form = (
       <form>
-        <Input
-          inputtype='input'
-          type='text'
-          name='name'
-          placeholder='Your Name'
-        />
+        <Input elementType='input' elementConfig='text' value='name' />
         <Input
           inputtype='input'
           type='email'
