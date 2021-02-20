@@ -33,9 +33,9 @@ export default class ContactData extends Component {
   getSelectTypeOdject(optionValues, value) {
     let options = [];
     if (optionValues && optionValues.length > 0) {
-      for (const option in optionValues) {
+      for (const option of optionValues) {
         options.push({
-          calue: option.toLowerCase(),
+          value: option.toLowerCase(),
           displayValue: option,
         });
       }
@@ -71,27 +71,24 @@ export default class ContactData extends Component {
   };
 
   render() {
+    const formElementsArray = [];
+    for (const key in this.state.orderForm) {
+      formElementsArray.push({
+        id: key,
+        config: this.state.orderForm[key],
+      });
+    }
+
     let form = (
       <form>
-        <Input elementType='input' elementConfig='text' value='name' />
-        <Input
-          inputtype='input'
-          type='email'
-          name='email'
-          placeholder='Your Mail'
-        />
-        <Input
-          inputtype='input'
-          type='text'
-          name='street'
-          placeholder='Street'
-        />
-        <Input
-          inputtype='input'
-          type='text'
-          name='postal'
-          placeholder='Postal'
-        />
+        {formElementsArray.map((formElement) => (
+          <Input
+            key={formElement.id}
+            elementType={formElement.config.elementType}
+            elementConfig={formElement.config.elementConfig}
+            value={formElement.config.value}
+          />
+        ))}
         <Button btnType='Success' clicked={this.orderHandler}>
           ORDER
         </Button>
