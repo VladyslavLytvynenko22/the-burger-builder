@@ -4,8 +4,7 @@ import classes from './Input.module.css';
 export default function input(props) {
   let inputElement = null;
   const inputClasses = [classes.InputElement];
-
-  if (props.invalid && props.shouldValidate) {
+  if (props.invalid && props.shouldValidate && props.touched) {
     inputClasses.push(classes.Invalid);
   }
 
@@ -31,7 +30,6 @@ export default function input(props) {
       );
       break;
     case 'select':
-      console.log(props.invalid);
       const options = props.elementConfig.options.map((option) => (
         <option key={option.value} value={option.value}>
           {option.displayValue}

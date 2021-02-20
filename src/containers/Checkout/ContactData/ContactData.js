@@ -21,7 +21,9 @@ export default class ContactData extends Component {
       country: this.getInputTypeObject('text', 'Country', '', {
         required: true,
       }),
-      email: this.getInputTypeObject('email', 'Your E-Mail', ''),
+      email: this.getInputTypeObject('email', 'Your E-Mail', '', {
+        required: true,
+      }),
       deliveryMethod: this.getSelectTypeOdject(['Fastest', 'Cheapest'], ''),
     },
     loading: false,
@@ -53,6 +55,7 @@ export default class ContactData extends Component {
         ...validations,
       },
       valid: false,
+      touched: false,
     };
   }
 
@@ -73,6 +76,7 @@ export default class ContactData extends Component {
         options: options,
       },
       value: value,
+      touched: false,
     };
   }
 
@@ -109,6 +113,7 @@ export default class ContactData extends Component {
       updatedFormElement.value,
       updatedFormElement.validation
     );
+    updatedFormElement.touched = true;
     updatedOrderForm[inputIdentifier] = updatedFormElement;
     this.setState({ orderForm: updatedOrderForm });
   };
@@ -133,6 +138,7 @@ export default class ContactData extends Component {
             changed={(event) => this.inputChangedHandlet(event, formElement.id)}
             invalid={!formElement.config.valid}
             shouldValidate={formElement.config.validation}
+            touched={formElement.config.touched}
           />
         ))}
         <Button btnType='Success'>ORDER</Button>
