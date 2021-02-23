@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 const mapStateToProps = (state) => {
   return {
     ingredients: state.burgerBuilder.ingredients,
+    purchased: state.order.purchased,
   };
 };
 
@@ -22,9 +23,10 @@ export default connect(mapStateToProps)(
     };
 
     render() {
-      let summary = <Redirect to='/' />;
-      if (this.props.ingredients) {
-        summary = (
+      const summary =
+        this.props.purchased || !this.props.ingredients ? (
+          <Redirect to='/' />
+        ) : (
           <div>
             <CheckoutSummary
               ingredients={this.props.ingredients}
@@ -37,7 +39,6 @@ export default connect(mapStateToProps)(
             />
           </div>
         );
-      }
       return <div>{summary}</div>;
     }
   }

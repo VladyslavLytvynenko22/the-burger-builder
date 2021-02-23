@@ -1,4 +1,4 @@
-import * as burgerBuilderActions from './../../store/actions/index';
+import * as actions from './../../store/actions/index';
 
 import React, { Component } from 'react';
 
@@ -23,10 +23,11 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     onIngredientAdded: (ingredientName) =>
-      dispatch(burgerBuilderActions.addIngredient(ingredientName)),
+      dispatch(actions.addIngredient(ingredientName)),
     onIngredientRemoved: (ingredientName) =>
-      dispatch(burgerBuilderActions.removeIngredient(ingredientName)),
-    onInitIngredients: () => dispatch(burgerBuilderActions.initIngredients()),
+      dispatch(actions.removeIngredient(ingredientName)),
+    onInitIngredients: () => dispatch(actions.initIngredients()),
+    onInitPurchase: () => dispatch(actions.purchaseInit()),
   };
 };
 
@@ -69,6 +70,7 @@ export default connect(
       };
 
       purchaseContinueHandler = () => {
+        this.props.onInitPurchase();
         this.props.history.push('/checkout');
       };
 
