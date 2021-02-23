@@ -1,4 +1,4 @@
-import * as actionTypes from './../../store/actions';
+import * as burgerBuilderActions from './../../store/actions/index';
 
 import React, { Component } from 'react';
 
@@ -22,15 +22,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     onIngredientAdded: (ingredientName) =>
-      dispatch({
-        type: actionTypes.ADD_INGREDIENT,
-        ingredientName: ingredientName,
-      }),
+      dispatch(burgerBuilderActions.addIngredient(ingredientName)),
     onIngredientRemoved: (ingredientName) =>
-      dispatch({
-        type: actionTypes.REMOVE_INGREDIENT,
-        ingredientName: ingredientName,
-      }),
+      dispatch(burgerBuilderActions.removeIngredient(ingredientName)),
   };
 };
 
