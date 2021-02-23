@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 
 import Button from './../../components/UI/Button/Button';
 import Input from './../../components/UI/Input/Input';
+import Spinner from './../../components/UI/Spinner/Spinner';
 import classes from './Auth.module.css';
 import { connect } from 'react-redux';
 
@@ -14,8 +15,15 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
+const mapStateToProps = (state) => {
+  return {
+    loading: state.auth.loading,
+    error: state.auth.error,
+  };
+};
+
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(
   class Auth extends Component {
@@ -120,20 +128,30 @@ export default connect(
           config: this.state.controls[key],
         });
       }
-      const form = formElementsArray.map((formElement) => (
-        <Input
-          key={formElement.id}
-          elementType={formElement.config.elementType}
-          elementConfig={formElement.config.elementConfig}
-          value={formElement.config.value}
-          changed={(event) => this.inputChangedHandlet(event, formElement.id)}
-          invalid={!formElement.config.valid}
-          shouldValidate={formElement.config.validation}
-          touched={formElement.config.touched}
-        />
-      ));
+      const form = this.props.loading ? (
+        <Spinner />
+      ) : (
+        formElementsArray.map((formElement) => (
+          <Input
+            key={formElement.id}
+            elementType={formElement.config.elementType}
+            elementConfig={formElement.config.elementConfig}
+            value={formElement.config.value}
+            changed={(event) => this.inputChangedHandlet(event, formElement.id)}
+            invalid={!formElement.config.valid}
+            shouldValidate={formElement.config.validation}
+            touched={formElement.config.touched}
+          />
+        ))
+      );
+
+      const errorMessage = this.props.error ? (
+        <p>{this.props.error.message}</p>
+      ) : null;
+
       return (
         <div className={classes.Auth}>
+          {errorMessage}
           <form onSubmit={this.submitHandler}>
             {form}
             <Button btnType='Success' disabled={!this.state.formIsValid}>
