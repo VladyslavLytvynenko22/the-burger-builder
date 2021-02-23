@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
+import { Redirect, Route } from 'react-router-dom';
 
 import CheckoutSummary from './../../components/Order/CheckoutSummary/CheckoutSummary';
 import ContactData from './ContactData/ContactData';
-import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 const mapStateToProps = (state) => {
@@ -22,19 +22,23 @@ export default connect(mapStateToProps)(
     };
 
     render() {
-      return (
-        <div>
-          <CheckoutSummary
-            ingredients={this.props.ingredients}
-            checkoutContinued={this.checkoutContinuedHandler}
-            checkoutCancelled={this.checkoutCancelledHandler}
-          />
-          <Route
-            path={this.props.match.path + '/contact-data'}
-            component={ContactData}
-          />
-        </div>
-      );
+      let summary = <Redirect to='/' />;
+      if (this.props.ingredients) {
+        summary = (
+          <div>
+            <CheckoutSummary
+              ingredients={this.props.ingredients}
+              checkoutContinued={this.checkoutContinuedHandler}
+              checkoutCancelled={this.checkoutCancelledHandler}
+            />
+            <Route
+              path={this.props.match.path + '/contact-data'}
+              component={ContactData}
+            />
+          </div>
+        );
+      }
+      return <div>{summary}</div>;
     }
   }
 );
