@@ -109,12 +109,6 @@ export default connect(mapStateToProps)(
         price: Number.parseFloat(this.props.totalPrice).toFixed(2),
         orderData: formData,
       };
-      axios.post('/orders.json', order).finally(() => {
-        this.setState({
-          loading: false,
-        });
-        this.props.history.push('/');
-      });
     };
 
     inputChangedHandlet = (event, inputIdentifier) => {
