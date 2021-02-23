@@ -97,7 +97,7 @@ export default connect(
     submitHandler = (event) => {
       event.preventDefault();
       this.props.onAuth(
-        this.state.controls.email.valid,
+        this.state.controls.email.value,
         this.state.controls.password.value
       );
     };
