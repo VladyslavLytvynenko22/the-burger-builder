@@ -37,7 +37,7 @@ export default connect(
         ) : (
           this.props.orders.map((order) => (
             <Order
-              key={order.key}
+              key={order.id}
               ingredients={order.ingredients}
               price={+order.price}
             />
