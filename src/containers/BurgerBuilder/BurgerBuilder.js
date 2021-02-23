@@ -36,22 +36,7 @@ export default connect(
     class BurgerBuilder extends Component {
       state = {
         purchasing: false,
-        loading: false,
-        error: false,
       };
-
-      componentDidMount() {
-        // axios
-        //   .get(
-        //     'https://the-burger-builder-d8d91-default-rtdb.europe-west1.firebasedatabase.app/ingredients.json'
-        //   )
-        //   .then((response) => {
-        //     this.setState({ ingredients: response.data });
-        //   })
-        //   .catch((error) => {
-        //     this.setState({ error: true });
-        //   });
-      }
 
       updatePurchaseState(ingredients) {
         const sum = Object.keys(ingredients)
@@ -120,10 +105,6 @@ export default connect(
               price={this.props.totalPrice}
             />
           );
-        }
-
-        if (this.state.loading) {
-          orderSummary = <Spinner />;
         }
 
         return (
