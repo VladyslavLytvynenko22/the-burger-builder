@@ -9,7 +9,8 @@ import { connect } from 'react-redux';
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onAuth: (email, password) => dispatch(actions.auth(email, password)),
+    onAuth: (email, password, isSignup) =>
+      dispatch(actions.auth(email, password, isSignup)),
   };
 };
 
@@ -24,12 +25,13 @@ export default connect(
           required: true,
           isEmail: true,
         }),
-        password: this.getInputTypeObject('input', 'Password', '', {
+        password: this.getInputTypeObject('password', 'Password', '', {
           required: true,
           minLength: 6,
         }),
       },
       formIsValid: false,
+      isSignup: true,
     };
 
     getInputTypeObject(type, placeholder, value, validations) {
@@ -98,8 +100,16 @@ export default connect(
       event.preventDefault();
       this.props.onAuth(
         this.state.controls.email.value,
-        this.state.controls.password.value
+        this.state.controls.password.value,
+        this.state.isSignup
       );
+    };
+
+    switchAuthModeHandler = (event) => {
+      event.preventDefault();
+      this.setState((prevState) => {
+        return { isSignup: !prevState.isSignup };
+      });
     };
 
     render() {
@@ -127,7 +137,10 @@ export default connect(
           <form onSubmit={this.submitHandler}>
             {form}
             <Button btnType='Success' disabled={!this.state.formIsValid}>
-              SUBBMIT
+              {this.state.isSignup ? 'SIGUP' : 'SIGIN'}
+            </Button>
+            <Button btnType='Danger' clicked={this.switchAuthModeHandler}>
+              {this.state.isSignup ? 'SWITCH TO SIGIN' : 'SWITCH TO SIGUP'}
             </Button>
           </form>
         </div>
