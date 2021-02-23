@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 
 const mapStateToProps = (state) => {
   return {
-    ingredients: state.ingredients,
+    ingredients: state.burgerBuilder.ingredients,
   };
 };
 

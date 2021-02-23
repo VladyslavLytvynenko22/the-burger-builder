@@ -12,9 +12,9 @@ import withErrorHandler from './../../../hoc/withErrorHandler/withErrorHandler';
 
 const mapStateToProps = (state) => {
   return {
-    ingredients: state.ingredients,
-    totalPrice: state.totalPrice,
-    loading: state.loading,
+    ingredients: state.burgerBuilder.ingredients,
+    totalPrice: state.burgerBuilder.totalPrice,
+    loading: state.order.loading,
   };
 };
 
@@ -49,7 +49,10 @@ export default connect(
           email: this.getInputTypeObject('email', 'Your E-Mail', '', {
             required: true,
           }),
-          deliveryMethod: this.getSelectTypeOdject(['Fastest', 'Cheapest'], ''),
+          deliveryMethod: this.getSelectTypeOdject(
+            ['Fastest', 'Cheapest'],
+            'fastest'
+          ),
         },
         formIsValid: false,
       };
@@ -92,6 +95,9 @@ export default connect(
               value: option.toLowerCase(),
               displayValue: option,
             });
+          }
+          if (value || value === '') {
+            value = optionValues[0].toLowerCase();
           }
         }
 
