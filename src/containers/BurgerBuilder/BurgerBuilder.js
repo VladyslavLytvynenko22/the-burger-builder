@@ -1,4 +1,4 @@
-import * as actionTypes from './../../store/actions';
+import * as actions from './../../store/actions/index';
 
 import React, { Component } from 'react';
 
@@ -14,23 +14,20 @@ import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 
 const mapStateToProps = (state) => {
   return {
-    ingredients: state.ingredients,
-    totalPrice: state.totalPrice,
+    ingredients: state.burgerBuilder.ingredients,
+    totalPrice: state.burgerBuilder.totalPrice,
+    error: state.burgerBuilder.error,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     onIngredientAdded: (ingredientName) =>
-      dispatch({
-        type: actionTypes.ADD_INGREDIENT,
-        ingredientName: ingredientName,
-      }),
+      dispatch(actions.addIngredient(ingredientName)),
     onIngredientRemoved: (ingredientName) =>
-      dispatch({
-        type: actionTypes.REMOVE_INGREDIENT,
-        ingredientName: ingredientName,
-      }),
+      dispatch(actions.removeIngredient(ingredientName)),
+    onInitIngredients: () => dispatch(actions.initIngredients()),
+    onInitPurchase: () => dispatch(actions.purchaseInit()),
   };
 };
 
@@ -42,21 +39,10 @@ export default connect(
     class BurgerBuilder extends Component {
       state = {
         purchasing: false,
-        loading: false,
-        error: false,
       };
 
       componentDidMount() {
-        // axios
-        //   .get(
-        //     'https://the-burger-builder-d8d91-default-rtdb.europe-west1.firebasedatabase.app/ingredients.json'
-        //   )
-        //   .then((response) => {
-        //     this.setState({ ingredients: response.data });
-        //   })
-        //   .catch((error) => {
-        //     this.setState({ error: true });
-        //   });
+        this.props.onInitIngredients();
       }
 
       updatePurchaseState(ingredients) {
@@ -84,6 +70,7 @@ export default connect(
       };
 
       purchaseContinueHandler = () => {
+        this.props.onInitPurchase();
         this.props.history.push('/checkout');
       };
 
@@ -97,7 +84,7 @@ export default connect(
         }
 
         let orderSummary = null;
-        let burger = this.state.error ? (
+        let burger = this.props.error ? (
           <p>Ingredients can't be loaded</p>
         ) : (
           <Spinner />
@@ -126,10 +113,6 @@ export default connect(
               price={this.props.totalPrice}
             />
           );
-        }
-
-        if (this.state.loading) {
-          orderSummary = <Spinner />;
         }
 
         return (
