@@ -1,10 +1,9 @@
-import React from 'react';
-
+import Aux from './../../../hoc/Auxiliary/Auxiliary';
+import BackDrop from './../../UI/Backdrop/Backdrop';
 import Logo from './../../Logo/Logo';
 import NavigationItems from './../NavigationItems/NavigationItems';
+import React from 'react';
 import classes from './SideDraw.module.css';
-import BackDrop from './../../UI/Backdrop/Backdrop';
-import Aux from './../../../hoc/Auxiliary/Auxiliary';
 
 const slideDrawer = (props) => {
   const backDropClasses = props.open
@@ -18,7 +17,7 @@ const slideDrawer = (props) => {
           <Logo />
         </div>
         <nav>
-          <NavigationItems />
+          <NavigationItems isAuthenticated={props.isAuthenticated} />
         </nav>
       </div>
     </Aux>

@@ -1,37 +1,48 @@
 import React, { Component } from 'react';
 
 import Aux from './../../hoc/Auxiliary/Auxiliary';
-import classes from './Layaout.module.css';
-import Toolbar from './../../components/Navigation/Toolbar/Toolbar';
 import SlideDrawer from './../../components/Navigation/SideDrawer/SideDrawer';
+import Toolbar from './../../components/Navigation/Toolbar/Toolbar';
+import classes from './Layaout.module.css';
+import { connect } from 'react-redux';
 
-class Layaout extends Component {
-  state = {
-    showSlideDrawer: false,
+const mapStateToProps = (state) => {
+  return {
+    isAuthenticated: state.auth.idToken !== null,
   };
+};
 
-  slideDrawerClosedHandler = () => {
-    this.setState({ showSlideDrawer: false });
-  };
+export default connect(mapStateToProps)(
+  class Layaout extends Component {
+    state = {
+      showSlideDrawer: false,
+    };
 
-  slideDrawerOpenHandler = () => {
-    this.setState((prevState) => ({
-      showSlideDrawer: !prevState.showSlideDrawer,
-    }));
-  };
+    slideDrawerClosedHandler = () => {
+      this.setState({ showSlideDrawer: false });
+    };
 
-  render() {
-    return (
-      <Aux>
-        <Toolbar drawerToggleClicked={this.slideDrawerOpenHandler} />
-        <SlideDrawer
-          open={this.state.showSlideDrawer}
-          closed={this.slideDrawerClosedHandler}
-        />
-        <main className={classes.Content}>{this.props.children}</main>
-      </Aux>
-    );
+    slideDrawerOpenHandler = () => {
+      this.setState((prevState) => ({
+        showSlideDrawer: !prevState.showSlideDrawer,
+      }));
+    };
+
+    render() {
+      return (
+        <Aux>
+          <Toolbar
+            drawerToggleClicked={this.slideDrawerOpenHandler}
+            isAuthenticated={this.props.isAuthenticated}
+          />
+          <SlideDrawer
+            open={this.state.showSlideDrawer}
+            closed={this.slideDrawerClosedHandler}
+            isAuthenticated={this.props.isAuthenticated}
+          />
+          <main className={classes.Content}>{this.props.children}</main>
+        </Aux>
+      );
+    }
   }
-}
-
-export default Layaout;
+);
