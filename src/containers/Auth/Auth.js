@@ -13,6 +13,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onAuth: (email, password, isSignup) =>
       dispatch(actions.auth(email, password, isSignup)),
+    onSetAuthRedirectPath: () => dispatch(actions.setAuthRedirectPath('/')),
   };
 };
 
@@ -21,6 +22,8 @@ const mapStateToProps = (state) => {
     loading: state.auth.loading,
     error: state.auth.error,
     isAuthenticated: state.auth.idToken !== null,
+    building: state.burgerBuilder.building,
+    authRedirectPath: state.auth.authRedirectPath,
   };
 };
 
@@ -43,6 +46,12 @@ export default connect(
       formIsValid: false,
       isSignup: true,
     };
+
+    componentDidMount() {
+      if (!this.props.building && this.props.authRedirectPath !== '/') {
+        this.props.onSetAuthRedirectPath();
+      }
+    }
 
     getInputTypeObject(type, placeholder, value, validations) {
       return {
@@ -123,7 +132,8 @@ export default connect(
     };
 
     render() {
-      if (this.props.isAuthenticated) return <Redirect to='/' />;
+      if (this.props.isAuthenticated)
+        return <Redirect to={this.props.authRedirectPath} />;
 
       const formElementsArray = [];
       for (const key in this.state.controls) {
