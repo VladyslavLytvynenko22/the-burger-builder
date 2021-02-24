@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 
 import Button from './../../components/UI/Button/Button';
 import Input from './../../components/UI/Input/Input';
+import { Redirect } from 'react-router-dom';
 import Spinner from './../../components/UI/Spinner/Spinner';
 import classes from './Auth.module.css';
 import { connect } from 'react-redux';
@@ -19,6 +20,7 @@ const mapStateToProps = (state) => {
   return {
     loading: state.auth.loading,
     error: state.auth.error,
+    isAuthenticated: state.auth.idToken !== null,
   };
 };
 
@@ -121,6 +123,8 @@ export default connect(
     };
 
     render() {
+      if (this.props.isAuthenticated) return <Redirect to='/' />;
+
       const formElementsArray = [];
       for (const key in this.state.controls) {
         formElementsArray.push({
