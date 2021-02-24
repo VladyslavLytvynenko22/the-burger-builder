@@ -15,12 +15,14 @@ const mapStateToProps = (state) => {
     ingredients: state.burgerBuilder.ingredients,
     totalPrice: state.burgerBuilder.totalPrice,
     loading: state.order.loading,
+    idToken: state.auth.idToken,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onOrderBurger: (orderData) => dispatch(actions.purchaseBurger(orderData)),
+    onOrderBurger: (orderData, idToken) =>
+      dispatch(actions.purchaseBurger(orderData, idToken)),
   };
 };
 
@@ -128,7 +130,7 @@ export default connect(
           price: Number.parseFloat(this.props.totalPrice).toFixed(2),
           orderData: formData,
         };
-        this.props.onOrderBurger(order);
+        this.props.onOrderBurger(order, this.props.idToken);
       };
 
       inputChangedHandlet = (event, inputIdentifier) => {
