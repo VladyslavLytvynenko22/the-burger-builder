@@ -16,6 +16,7 @@ const mapStateToProps = (state) => {
     totalPrice: state.burgerBuilder.totalPrice,
     loading: state.order.loading,
     idToken: state.auth.idToken,
+    userId: state.auth.userId,
   };
 };
 
@@ -129,6 +130,7 @@ export default connect(
           ingredients: this.props.ingredients,
           price: Number.parseFloat(this.props.totalPrice).toFixed(2),
           orderData: formData,
+          userId: this.props.userId,
         };
         this.props.onOrderBurger(order, this.props.idToken);
       };
