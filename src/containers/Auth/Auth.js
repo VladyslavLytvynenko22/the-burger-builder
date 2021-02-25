@@ -1,6 +1,7 @@
 import * as actions from './../../store/actions/index';
 
 import React, { Component } from 'react';
+import { checkValidity, updateObject } from './../../shared/utility';
 
 import Button from './../../components/UI/Button/Button';
 import Input from './../../components/UI/Input/Input';
@@ -69,37 +70,17 @@ export default connect(
       };
     }
 
-    checkValidity(value, rules) {
-      let isValid = true;
-      if (rules.required) {
-        isValid = value.trim() !== '';
-      }
-      if (rules.minLength && isValid) {
-        isValid = value.length >= rules.minLength;
-      }
-      if (rules.maxLength && isValid) {
-        isValid = value.length <= rules.maxLength;
-      }
-      if (rules.isEmail && isValid) {
-        const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        isValid = pattern.test(String(value).toLowerCase());
-      }
-      return isValid;
-    }
-
     inputChangedHandlet = (event, controlName) => {
-      const updatedControls = {
-        ...this.state.controls,
-        [controlName]: {
-          ...this.state.controls[controlName],
+      const updatedControls = updateObject(this.state.controls, {
+        [controlName]: updateObject(this.state.controls[controlName], {
           value: event.target.value,
-          valid: this.checkValidity(
+          valid: checkValidity(
             event.target.value,
             this.state.controls[controlName].validation
           ),
           touched: true,
-        },
-      };
+        }),
+      });
 
       let formIsValid = true;
       for (const inputIdentifier in updatedControls) {
