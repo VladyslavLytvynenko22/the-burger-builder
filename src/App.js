@@ -1,3 +1,5 @@
+import * as actions from './store/actions/index';
+
 import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
 
@@ -8,21 +10,37 @@ import Layaut from './hoc/Layaout/Layaout';
 import Logout from './containers/Auth/Logout/Logout';
 import Orders from './containers/Orders/Orders';
 import classes from './App.module.css';
+import { connect } from 'react-redux';
 
-export default class App extends Component {
-  render() {
-    return (
-      <div className={classes.App}>
-        <Layaut>
-          <Switch>
-            <Route path='/checkout' component={Checkout} />
-            <Route path='/orders' component={Orders} />
-            <Route path='/auth' component={Auth} />
-            <Route path='/logout' component={Logout} />
-            <Route path='/' exact component={BurgerBuilder} />
-          </Switch>
-        </Layaut>
-      </div>
-    );
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onTryAuthSignup: () => dispatch(actions.authCheckSate()),
+  };
+};
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(
+  class App extends Component {
+    componentDidMount() {
+      this.props.onTryAuthSignup();
+    }
+
+    render() {
+      return (
+        <div className={classes.App}>
+          <Layaut>
+            <Switch>
+              <Route path='/checkout' component={Checkout} />
+              <Route path='/orders' component={Orders} />
+              <Route path='/auth' component={Auth} />
+              <Route path='/logout' component={Logout} />
+              <Route path='/' exact component={BurgerBuilder} />
+            </Switch>
+          </Layaut>
+        </div>
+      );
+    }
   }
-}
+);
