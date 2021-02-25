@@ -12,7 +12,7 @@ const slideDrawer = (props) => {
   return (
     <Aux>
       <BackDrop show={props.open} clicked={props.closed} />
-      <div className={backDropClasses}>
+      <div className={backDropClasses} onClick={props.closed}>
         <div className={classes.Logo}>
           <Logo />
         </div>
