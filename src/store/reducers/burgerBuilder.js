@@ -8,6 +8,7 @@ const initialState = {
   ingredients: null,
   totalPrice: initTotalPrice,
   error: false,
+  building: false,
 };
 
 const INGREDIENT_PRICES = {
@@ -44,6 +45,7 @@ const changeIngredient = (action, state, operator) => {
   const updatedState = {
     ingredients: updatedIngredients,
     totalPrice: totalPrice,
+    building: true,
   };
   return updateObject(state, updatedState);
 };
@@ -58,6 +60,7 @@ const setIngredients = (action, state) => {
     },
     error: false,
     totalPrice: initTotalPrice,
+    building: false,
   });
 };
 

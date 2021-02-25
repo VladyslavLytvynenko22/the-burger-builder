@@ -17,6 +17,7 @@ const mapStateToProps = (state) => {
     ingredients: state.burgerBuilder.ingredients,
     totalPrice: state.burgerBuilder.totalPrice,
     error: state.burgerBuilder.error,
+    isAuthenticated: state.auth.idToken !== null,
   };
 };
 
@@ -28,6 +29,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(actions.removeIngredient(ingredientName)),
     onInitIngredients: () => dispatch(actions.initIngredients()),
     onInitPurchase: () => dispatch(actions.purchaseInit()),
+    onSetAuthRedirectPath: (path) =>
+      dispatch(actions.setAuthRedirectPath(path)),
   };
 };
 
@@ -58,9 +61,14 @@ export default connect(
       }
 
       purchaseHandler = () => {
-        this.setState({
-          purchasing: true,
-        });
+        if (this.props.isAuthenticated) {
+          this.setState({
+            purchasing: true,
+          });
+        } else {
+          this.props.onSetAuthRedirectPath('/checkout');
+          this.props.history.push('/auth');
+        }
       };
 
       purchaseCancelHandler = () => {
@@ -101,6 +109,7 @@ export default connect(
                 price={this.props.totalPrice}
                 purchaseable={this.updatePurchaseState(this.props.ingredients)}
                 ordered={this.purchaseHandler}
+                isAuthenticated={this.props.isAuthenticated}
               />
             </Aux>
           );

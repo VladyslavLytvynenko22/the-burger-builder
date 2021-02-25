@@ -12,12 +12,15 @@ const mapStateToProps = (state) => {
   return {
     orders: state.order.orders,
     loading: state.order.loading,
+    idToken: state.auth.idToken,
+    userId: state.auth.userId,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onFetchOrders: () => dispatch(actions.fetchOrders()),
+    onFetchOrders: (idToken, userId) =>
+      dispatch(actions.fetchOrders(idToken, userId)),
   };
 };
 
@@ -28,7 +31,7 @@ export default connect(
   withErrorHandler(
     class Orders extends Component {
       componentDidMount() {
-        this.props.onFetchOrders();
+        this.props.onFetchOrders(this.props.idToken, this.props.userId);
       }
 
       render() {
