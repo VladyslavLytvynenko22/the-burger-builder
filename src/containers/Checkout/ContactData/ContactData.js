@@ -1,6 +1,7 @@
 import * as actions from './../../../store/actions/index';
 
 import React, { Component } from 'react';
+import { checkValidity, updateObject } from './../../../shared/utility';
 
 import Button from './../../../components/UI/Button/Button';
 import Input from './../../../components/UI/Input/Input';
@@ -8,7 +9,6 @@ import Spinner from './../../../components/UI/Spinner/Spinner';
 import axios from './../../../axios-orders';
 import classes from './ContactData.module.css';
 import { connect } from 'react-redux';
-import { updateObject } from './../../../shared/utility';
 import withErrorHandler from './../../../hoc/withErrorHandler/withErrorHandler';
 
 const mapStateToProps = (state) => {
@@ -46,6 +46,7 @@ export default connect(
             required: true,
             minLength: 5,
             maxLength: 5,
+            isNumeric: true,
           }),
           country: this.getInputTypeObject('text', 'Country', '', {
             required: true,
@@ -61,24 +62,6 @@ export default connect(
         },
         formIsValid: false,
       };
-
-      checkValidity(value, rules) {
-        let isValid = true;
-        if (rules.required) {
-          isValid = value.trim() !== '';
-        }
-        if (rules.minLength && isValid) {
-          isValid = value.length >= rules.minLength;
-        }
-        if (rules.maxLength && isValid) {
-          isValid = value.length <= rules.maxLength;
-        }
-        if (rules.isEmail && isValid) {
-          const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-          isValid = pattern.test(String(value).toLowerCase());
-        }
-        return isValid;
-      }
 
       getInputTypeObject(type, placeholder, value, validations) {
         return {
@@ -147,7 +130,7 @@ export default connect(
           {
             value: event.target.value,
             valid: this.state.orderForm[inputIdentifier].validation
-              ? this.checkValidity(
+              ? checkValidity(
                   event.target.value,
                   this.state.orderForm[inputIdentifier].validation
                 )
