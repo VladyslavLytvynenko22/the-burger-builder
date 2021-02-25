@@ -8,6 +8,7 @@ import { Redirect } from 'react-router-dom';
 import Spinner from './../../components/UI/Spinner/Spinner';
 import classes from './Auth.module.css';
 import { connect } from 'react-redux';
+import { updateObject } from './../../shared/utility';
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -88,18 +89,16 @@ export default connect(
     }
 
     inputChangedHandlet = (event, controlName) => {
-      const updatedControls = {
-        ...this.state.controls,
-        [controlName]: {
-          ...this.state.controls[controlName],
+      const updatedControls = updateObject(this.state.controls, {
+        [controlName]: updateObject(this.state.controls[controlName], {
           value: event.target.value,
           valid: this.checkValidity(
             event.target.value,
             this.state.controls[controlName].validation
           ),
           touched: true,
-        },
-      };
+        }),
+      });
 
       let formIsValid = true;
       for (const inputIdentifier in updatedControls) {

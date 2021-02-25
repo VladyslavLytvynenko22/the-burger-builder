@@ -1,5 +1,5 @@
 import * as actionTypes from './actionTypes';
-import * as global from './../../global';
+import * as global from './../../shared/global';
 
 import axios from 'axios';
 

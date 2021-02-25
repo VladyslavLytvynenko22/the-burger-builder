@@ -8,6 +8,7 @@ import Spinner from './../../../components/UI/Spinner/Spinner';
 import axios from './../../../axios-orders';
 import classes from './ContactData.module.css';
 import { connect } from 'react-redux';
+import { updateObject } from './../../../shared/utility';
 import withErrorHandler from './../../../hoc/withErrorHandler/withErrorHandler';
 
 const mapStateToProps = (state) => {
@@ -51,6 +52,7 @@ export default connect(
           }),
           email: this.getInputTypeObject('email', 'Your E-Mail', '', {
             required: true,
+            isEmail: true,
           }),
           deliveryMethod: this.getSelectTypeOdject(
             ['Fastest', 'Cheapest'],
@@ -70,6 +72,10 @@ export default connect(
         }
         if (rules.maxLength && isValid) {
           isValid = value.length <= rules.maxLength;
+        }
+        if (rules.isEmail && isValid) {
+          const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+          isValid = pattern.test(String(value).toLowerCase());
         }
         return isValid;
       }
@@ -136,17 +142,22 @@ export default connect(
       };
 
       inputChangedHandlet = (event, inputIdentifier) => {
-        const updatedOrderForm = { ...this.state.orderForm };
-        const updatedFormElement = { ...updatedOrderForm[inputIdentifier] };
-        updatedFormElement.value = event.target.value;
-        if (updatedFormElement.validation) {
-          updatedFormElement.valid = this.checkValidity(
-            updatedFormElement.value,
-            updatedFormElement.validation
-          );
-        }
-        updatedFormElement.touched = true;
-        updatedOrderForm[inputIdentifier] = updatedFormElement;
+        const updatedFormElement = updateObject(
+          this.state.orderForm[inputIdentifier],
+          {
+            value: event.target.value,
+            valid: this.state.orderForm[inputIdentifier].validation
+              ? this.checkValidity(
+                  event.target.value,
+                  this.state.orderForm[inputIdentifier].validation
+                )
+              : this.state.orderForm[inputIdentifier].valid,
+            touched: true,
+          }
+        );
+        const updatedOrderForm = updateObject(this.state.orderForm, {
+          [inputIdentifier]: updatedFormElement,
+        });
 
         let formIsValid = true;
         for (const inputIdentifier in updatedOrderForm) {
